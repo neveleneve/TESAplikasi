@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
 use App\Helpers\HoltWinter;
+use App\Models\Item;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LaporanController extends Controller
 {
@@ -20,12 +22,38 @@ class LaporanController extends Controller
 
     public function transaksiAll(Request $request)
     {
-        // 
+        dd($request->all());
     }
 
     public function transaksiOne(Transaksi $transaksi)
     {
-        // 
+        dd($transaksi);
+    }
+
+    public function test($quarter, $year)
+    {
+        $itemA = Item::find(1); // Ganti dengan ID item yang sesuai
+        $penjualanPerQuarter = $itemA->getTotalPenjualanPerQuarter();
+        dd($penjualanPerQuarter);
+    }
+
+    public function testx()
+    {
+        $itemId = 1; // Ganti dengan item_id yang sesuai dengan item A
+
+        $quarterlySales = DB::table('transaksis')
+            ->join('detail_transaksis', 'transaksis.id', '=', 'detail_transaksis.transaksi_id')
+            ->where('detail_transaksis.item_id', '=', $itemId)
+            ->select(
+                DB::raw('YEAR(transaksis.created_at) as year'),
+                DB::raw('QUARTER(transaksis.created_at) as quarter'),
+                DB::raw('SUM(detail_transaksis.jumlah) as total_penjualan')
+            )
+            ->groupBy('year', 'quarter')
+            ->orderBy('year')
+            ->orderBy('quarter')
+            ->get();
+        dd($quarterlySales);
     }
 
     public function forecasting()
@@ -33,8 +61,8 @@ class LaporanController extends Controller
         // Data historis (contoh data sederhana)
         $data = ['27', '12', '43', '12', '12', '16', '19', '43', '12', '40', '100', '500'];
 
-        $hitungA = $this->holt_winters($data, 6, 0.1, 0.02, 0.01);
-        $hitungB = new HoltWinter(0.1, 0.01, 0.02, 6, $data);
+        $hitungA = $this->holt_winters($data, 4, 0.1, 0.02, 0.01);
+        $hitungB = new HoltWinter(0.1, 0.02, 0.01, 4, $data);
 
         dd([$hitungA, $hitungB]);
     }

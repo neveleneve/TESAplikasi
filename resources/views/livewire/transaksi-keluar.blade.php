@@ -11,13 +11,12 @@
                 <a href="{{ route('transaksi.index') }}" class="btn btn-sm btn-outline-light">
                     <i class="fa fa-chevron-left"></i>
                 </a>
-                <span class="fw-bold">
-                    Tambah Transaksi Keluar
-                </span>
             </div>
             <form action="{{ route('transaksi.store') }}" method="post">
                 @csrf
                 <div class="card-body row justify-content-center">
+                    <h4 class="text-center fw-bold">Tambah Transaksi Keluar</h4>
+                    <br>
                     <div class="col-12 col-lg-10 text-center mb-3">
                         <label for="kode_transaksi" class="fw-bold mb-2">Kode Transaksi</label>
                         <input type="text" name="kode_transaksi" id="kode_transaksi" required readonly

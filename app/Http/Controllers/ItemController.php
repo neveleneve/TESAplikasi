@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\HoltWinter;
 use App\Models\Item;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ItemController extends Controller
@@ -61,8 +63,15 @@ class ItemController extends Controller
 
     public function show(Item $daftar_barang)
     {
+        $detailtransaksi = $daftar_barang->detailTransaksi()->paginate(10);
+        $peramalan = $this->peramalan($daftar_barang->id);
+        $olahData = $this->olahData($peramalan);
+        $holtwinter = new HoltWinter(0.1, 0.01, 0.02, 4, $olahData);
         return view('pages.item.show', [
-            'item' => $daftar_barang
+            'item' => $daftar_barang,
+            'detail' => $detailtransaksi,
+            'peramalan' => $peramalan,
+            'holtwinter' => $holtwinter->forecast(),
         ]);
     }
 
@@ -105,5 +114,31 @@ class ItemController extends Controller
             'message' => 'Berhasil menghapus data item : ' . $daftarBarang->name . '!',
             'color' => 'success',
         ]);
+    }
+
+    public function peramalan($id)
+    {
+        $quarterlySales = DB::table('transaksis')
+            ->join('detail_transaksis', 'transaksis.id', '=', 'detail_transaksis.transaksi_id')
+            ->where('detail_transaksis.item_id', '=', $id)
+            ->select(
+                DB::raw('YEAR(transaksis.created_at) as year'),
+                DB::raw('QUARTER(transaksis.created_at) as quarter'),
+                DB::raw('SUM(detail_transaksis.jumlah) as total_penjualan')
+            )
+            ->groupBy('year', 'quarter')
+            ->orderBy('year', 'asc')
+            ->orderBy('quarter', 'asc')
+            ->get();
+        return $quarterlySales;
+    }
+
+    public function olahData($data)
+    {
+        $fixedData = [];
+        foreach ($data as $key => $value) {
+            $fixedData[$key] = $value->total_penjualan;
+        }
+        return $fixedData;
     }
 }

@@ -130,7 +130,7 @@
                                                     class="btn btn-sm btn-outline-dark">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
-                                                <a href="{{ route('laporan.transaksi.one', ['id' => $item->id]) }}"
+                                                <a href="{{ route('laporan.transaksi.one', ['transaksi' => $item->id]) }}"
                                                     class="btn btn-sm btn-outline-primary">
                                                     <i class="fa fa-print"></i>
                                                 </a>

@@ -11,6 +11,7 @@ class HoltWinter
   private $gamma;
   private $L;
   private $series;
+
   private $levels;
   private $trends;
   private $seasonals;
@@ -33,61 +34,59 @@ class HoltWinter
     $this->initialize_seasonals();
 
     for ($i = $this->L; $i < count($this->series); $i++) {
-      $x = $this->series[$i];
-      $s0 = $this->seasonals[$i - $this->L];
-      $l0 = $this->levels[$i - 1];
-      $t0 = $this->trends[$i - 1];
-
-      $l = $this->alpha * $x / $s0 + (1 - $this->alpha) * ($l0 + $t0);
-      $t = $this->beta * ($l - $l0) + (1 - $this->beta) * $t0;
-      $s = $this->gamma * ($x / $l) + (1 - $this->gamma) * $s0;
-
-      $this->levels[$i] = $l;
-      $this->trends[$i] = $t;
-      $this->seasonals[$i] = $s;
+      if ($i == $this->L) {
+        $level = $this->series[$i] / $this->seasonals[$i - $this->L];
+        $trend = $level - ($this->series[$i - 1] / $this->seasonals[$i - 1]);
+        $season = $this->gamma * ($this->series[$i] / $level) + (1 - $this->gamma) * $this->seasonals[$i - $this->L];
+      } else {
+        $level = $this->alpha * ($this->series[$i] / $this->seasonals[$i - $this->L]) + (1 - $this->alpha) * ($this->levels[$i - 1] + $this->trends[$i - 1]);
+        $trend = $this->beta * ($level - $this->levels[$i - 1]) + (1 - $this->beta) * $this->trends[$i - 1];
+        $season = $this->gamma * ($this->series[$i] / $level) + (1 - $this->gamma) * $this->seasonals[$i - $this->L];
+      }
+      $this->levels[$i] = round($level, 2);
+      $this->trends[$i] = round($trend, 2);
+      $this->seasonals[$i] = round($season, 2);
     }
   }
 
   private function initialize_levels()
   {
     $this->levels = array();
-    $sum = 0;
-    for ($i = 0; $i < $this->L - 1; $i++) {
-      $this->levels[] = null;
-      $sum += $this->series[$i];
+    for ($i = 0; $i < $this->L; $i++) {
+      $this->levels[$i] = null;
     }
-    $sum += $this->series[$this->L - 1];
-    $this->levels[] = $sum / $this->L;
   }
 
   private function initialize_trends()
   {
     $this->trends = array();
-    for ($i = 0; $i < $this->L - 1; $i++) {
-      $this->trends[] = null;
+    for ($i = 0; $i < $this->L; $i++) {
+      $this->trends[$i] = null;
     }
-    $this->trends[] = 0;
   }
 
   private function initialize_seasonals()
   {
-    $this->seasonals = array();
+    $this->seasonals = [];
+    $sum = 0;
     for ($i = 0; $i < $this->L; $i++) {
-      $this->seasonals[] = $this->series[$i] / $this->levels[$this->L - 1];
+      $sum += $this->series[$i];
+    }
+    for ($i = 0; $i < $this->L; $i++) {
+      $this->seasonals[$i] = round($this->series[$i] / ($sum / $this->L), 2);
     }
   }
 
-  public function forecast($k)
+  public function forecast()
   {
-    $m = $k - count($this->series) + 1;
-    if ($m <= 0) {
-      throw new Exception("Supposed to forecast future series");
+    $forecast = [];
+    for ($i = 0; $i < count($this->series); $i++) {
+      if ($i < $this->L) {
+        $forecast[$i] = 0;
+      } else {
+        $forecast[$i] = round($this->levels[$i - 1] + $this->trends[$i - 1] * $this->seasonals[$i  - $this->L], 0);
+      }
     }
-
-    $i = count($this->series) - 1;
-    $j = $i - $this->L + (($m - 1) % $this->L) + 1;
-    $forecast = ($this->levels[$i] + $m * $this->trends[$i]) * $this->seasonals[$j];
-
     return $forecast;
   }
 }

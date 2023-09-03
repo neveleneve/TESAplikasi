@@ -18,7 +18,7 @@ class TransaksiSeeder extends Seeder
 
         while ($startDate->lte($endDate)) {
             $numberOfTransactions = rand(50, 70);
-            for ($i = 0; $i < 100; $i++) {
+            for ($i = 0; $i < $numberOfTransactions; $i++) {
                 $random = rand(0, 1);
 
                 $transaksi = Transaksi::create([

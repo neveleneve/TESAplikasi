@@ -47,7 +47,6 @@ class TransaksiController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
         if ($request->has('kode_tipe_transaksi')) {
             $validasi = Validator::make($request->all(), [
                 'kode_transaksi' => ['required'],
@@ -113,7 +112,10 @@ class TransaksiController extends Controller
 
     public function show(Transaksi $transaksi)
     {
-        //
+        // dd($transaksi);
+        return view('pages.transaksi.show', [
+            'transaksi' => $transaksi
+        ]);
     }
 
     public function edit(Transaksi $transaksi)
