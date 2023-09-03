@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.content-container {
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+}
+
+.content {
+  padding: 20px;
+}
+
+.dropdown-toggle::after {
+  content: none;
+}
+
+.custom-caret::before {
+  content: "\f078";
+  font-family: "Font Awesome 5 Free";
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.footer-menu .nav-item .nav-link.active {
+  background-color: #4d5154;
+  color: #fff;
+  border-radius: 5px;
+}
