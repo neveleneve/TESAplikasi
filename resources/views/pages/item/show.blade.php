@@ -65,7 +65,7 @@
                                     <th>Kode Transaksi</th>
                                     <th>Jenis Transaksi</th>
                                     <th>Jumlah</th>
-                                    <th>Waktu</th>
+                                    <th>Tanggal</th>
                                 </tr>
                             </thead>
                             <tbody>
