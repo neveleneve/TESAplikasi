@@ -19,6 +19,6 @@ class Item extends Model
 
     public function detailTransaksi()
     {
-        return $this->hasMany(DetailTransaksi::class)->orderBy();
+        return $this->hasMany(DetailTransaksi::class)->orderBy('created_at');
     }
 }
