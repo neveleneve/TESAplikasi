@@ -16,12 +16,22 @@ class PeramalanController extends Controller
     public function index()
     {
         $data = $this->peramalan();
-        $olahData = $this->olahData($data);
-        $jumlahdata = count($data);
-        $holtwinter = new HoltWinter(0.1, 0.01, 0.02, 4, $olahData);
+        // dd(count($data));
+        if (count($data) < 4) {
+            $olahData = [];
+            $jumlahdata = count($data);
+            $holtwinter = [];
+            $forecast = [];
+        }else {
+            $olahData = $this->olahData($data);
+            // dd($olahData);
+            $jumlahdata = count($data);
+            $holtwinter = new HoltWinter(0.1, 0.01, 0.02, 4, $olahData);
+            $forecast = $holtwinter->forecast();
+        }
         return view('pages.peramalan.index', [
             'data' => $data,
-            'holtwinter' => $holtwinter->forecast(),
+            'holtwinter' => $forecast,
             'count' => $jumlahdata - 1,
         ]);
     }

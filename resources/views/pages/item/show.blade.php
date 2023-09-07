@@ -116,20 +116,30 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($peramalan as $key => $items)
-                                        <tr>
-                                            <td>{{ $items->year }}</td>
-                                            <td>{{ $items->quarter }}</td>
-                                            <td>{{ $items->total_penjualan }}</td>
-                                            <td>{{ $holtwinter[$key] }}</td>
-                                        </tr>
-                                    @empty
+                                    @if (count($peramalan) < 4)
                                         <tr>
                                             <td colspan="4">
-                                                <h6 class="fw-bold text-center h4">Data Kosong</h6>
+                                                <h6 class="fw-bold text-center h4">Peramalan Belum Bisa Dilakukan</h6>
                                             </td>
                                         </tr>
-                                    @endforelse
+                                    @else
+                                        @forelse ($peramalan as $key => $items)
+                                            <tr>
+                                                <td>{{ $items->year }}</td>
+                                                <td>{{ $items->quarter }}</td>
+                                                <td>{{ $items->total_penjualan }}</td>
+                                                <td>{{ $holtwinter[$key] }}</td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="4">
+                                                    <h4 class="text-center">
+                                                        Data Kosong
+                                                    </h4>
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                    @endif
                                 </tbody>
                             </table>
                         </div>

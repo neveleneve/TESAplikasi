@@ -64,14 +64,23 @@ class ItemController extends Controller
     public function show(Item $daftar_barang)
     {
         $detailtransaksi = $daftar_barang->detailTransaksi()->paginate(10);
+        
         $peramalan = $this->peramalan($daftar_barang->id);
-        $olahData = $this->olahData($peramalan);
-        $holtwinter = new HoltWinter(0.1, 0.01, 0.02, 4, $olahData);
+        if (count($peramalan) < 4) {
+            $olahData = [];
+            $holtwinter = [];
+            $forecast = [];
+        }else {
+            $olahData = $this->olahData($peramalan);
+            $holtwinter = new HoltWinter(0.1, 0.01, 0.02, 4, $olahData);
+            $forecast = $holtwinter->forecast();
+        }
+        // dd([$holtwinter,$forecast]);
         return view('pages.item.show', [
             'item' => $daftar_barang,
             'detail' => $detailtransaksi,
             'peramalan' => $peramalan,
-            'holtwinter' => $holtwinter->forecast(),
+            'holtwinter' => $forecast,
         ]);
     }
 

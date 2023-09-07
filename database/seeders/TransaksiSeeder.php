@@ -13,8 +13,8 @@ class TransaksiSeeder extends Seeder
     public function run()
     {
         $tipe = ['masuk', 'keluar'];
-        $startDate = Carbon::parse('2021-01-01');
-        $endDate = Carbon::parse('2023-08-31');
+        $startDate = Carbon::parse('2022-01-01');
+        $endDate = Carbon::parse('2023-09-07');
 
         while ($startDate->lte($endDate)) {
             $numberOfTransactions = rand(50, 70);
