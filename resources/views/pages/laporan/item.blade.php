@@ -60,14 +60,15 @@
                 <img src="{{ asset('images/llogo.png') }}" style="width: 100px;">
             </td>
             <td style="width: 85%;">
-                <div class="head1">LAPORAN DATA BARANG</div>
                 <div class="head2">Toko Bangun Jaya</div>
-                <div class="head3">Jl. Tambak No. 21 Kota Tanjungpinang Kel. Kamboja Kec. Tanjungpinang Barat</div>
+                <div class="head3">Jl. Gatot Subroto No. 6 - 9 Tanjungpinang </div>
+                <div class="head3">Telp. 0771 - 317183 </div>
             </td>
         </tr>
     </table>
     <br>
-    <p>Data per {{ date('j F Y') }} Pukul {{ date('H:i:s') }}</p>
+    <div class="head1" style="text-align: center"><u>LAPORAN DATA BARANG</u></div>
+    <br>
     <table class="report report-siswa">
         <thead>
             <tr>
@@ -97,6 +98,7 @@
             @endforelse
         </tbody>
     </table>
+    <p>Data per {{ date('j F Y') }} Pukul {{ date('H:i:s') }}</p>
     <table>
         <tbody>
 

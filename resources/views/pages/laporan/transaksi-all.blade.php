@@ -64,7 +64,8 @@
             </td>
             <td style="width: 85%;">
                 <div class="head2">Toko Bangun Jaya</div>
-                <div class="head3">Jl. Tambak No. 21 Kota Tanjungpinang Kel. Kamboja Kec. Tanjungpinang Barat</div>
+                <div class="head3">Jl. Gatot Subroto No. 6 - 9 Tanjungpinang </div>
+                <div class="head3">Telp. 0771 - 317183 </div>
             </td>
         </tr>
     </table>
