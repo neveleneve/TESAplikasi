@@ -20,7 +20,6 @@ class LaporanController extends Controller
     {
         $item = Item::get();
         $title = 'Laporan Daftar Barang Tersedia ' . date('F Y') . '.pdf';
-        // dd($item);
         $pdf = PDF::loadView('pages.laporan.item', [
             'data' => $item,
             'title' => $title,
@@ -81,6 +80,25 @@ class LaporanController extends Controller
         return $pdf->stream($title);
     }
 
+    public function forecasting(Request $request)
+    {
+        $title = 'Laporan Peramalan Barang';
+        $data = $this->peramalan();
+        $olahData = $this->olahData($data);
+        $jumlahdata = count($data);
+        $holtwinter = new HoltWinter(0.1, 0.01, 0.02, 4, $olahData);
+        $pdf = PDF::loadView('pages.laporan.peramalan', [
+            'data' => $data,
+            'holtwinter' => $holtwinter->forecast(),
+            'count' => $jumlahdata - 1,
+            'tahun' => $request->tahun,
+            'title' => $title,
+        ])->setPaper('a4', 'potrait')
+            ->setOptions(['defaultFont' => 'sans-serif', 'isRemoteEnabled' => true]);
+
+        return $pdf->stream($title);
+    }
+
     private function namaBulan($digit)
     {
         $nama = '';
@@ -126,5 +144,31 @@ class LaporanController extends Controller
                 break;
         }
         return $nama;
+    }
+
+    public function peramalan()
+    {
+        $quarterlySales = DB::table('transaksis')
+            ->join('detail_transaksis', 'transaksis.id', '=', 'detail_transaksis.transaksi_id')
+            ->select(
+                DB::raw('YEAR(transaksis.created_at) as year'),
+                DB::raw('QUARTER(transaksis.created_at) as quarter'),
+                DB::raw('SUM(detail_transaksis.jumlah) as total_penjualan')
+            )
+            ->where('tipe_transaksi', 'keluar')
+            ->groupBy('year', 'quarter')
+            ->orderBy('year', 'desc')
+            ->orderBy('quarter', 'desc')
+            ->get();
+        return $quarterlySales;
+    }
+
+    public function olahData($data)
+    {
+        $fixedData = [];
+        foreach ($data as $key => $value) {
+            $fixedData[$key] = $value->total_penjualan;
+        }
+        return $fixedData;
     }
 }

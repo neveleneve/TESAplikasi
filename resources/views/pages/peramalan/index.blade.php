@@ -35,18 +35,28 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
-                                            <div class="modal-body">
-                                                ...
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-outline-danger btn-sm fw-bold"
-                                                    data-bs-dismiss="modal">
-                                                    Batal
-                                                </button>
-                                                <button type="button" class="btn btn-outline-dark btn-sm fw-bold">
-                                                    Cetak
-                                                </button>
-                                            </div>
+                                            <form action="{{ route('laporan.forecasting') }}" method="post">
+                                                @csrf
+                                                <div class="modal-body">
+                                                    <select name="tahun" id="tahun" class="form-select" required>
+                                                        <option value="">Pilih Tahun</option>
+                                                        @for ($i = 0; $i < 3; $i++)
+                                                            <option value="{{ date('Y') - $i }}">
+                                                                {{ date('Y') - $i }}
+                                                            </option>
+                                                        @endfor
+                                                    </select>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-danger btn-sm fw-bold"
+                                                        data-bs-dismiss="modal">
+                                                        Batal
+                                                    </button>
+                                                    <button type="submit" class="btn btn-outline-dark btn-sm fw-bold">
+                                                        Cetak
+                                                    </button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -63,7 +73,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($peramalan as $key => $item)
+                                            @foreach ($data as $key => $item)
                                                 <tr>
                                                     <td>{{ $item->year }}</td>
                                                     <td>{{ $item->quarter }}</td>

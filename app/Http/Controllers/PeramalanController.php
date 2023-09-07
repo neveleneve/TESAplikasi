@@ -20,7 +20,7 @@ class PeramalanController extends Controller
         $jumlahdata = count($data);
         $holtwinter = new HoltWinter(0.1, 0.01, 0.02, 4, $olahData);
         return view('pages.peramalan.index', [
-            'peramalan' => $data,
+            'data' => $data,
             'holtwinter' => $holtwinter->forecast(),
             'count' => $jumlahdata - 1,
         ]);
