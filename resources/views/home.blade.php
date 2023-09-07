@@ -16,9 +16,8 @@
                                         <h5 class="card-title">Transaksi Masuk Hari Ini</h5>
                                         <p class="card-text">
                                             {{-- {{ $masuk }} Transaksi --}}
+                                            {{ $masuk }} Transaksi
                                         </p>
-                                        {{-- <a class="link-success" href="{{ route('masuk.index') }}">Lihat Detail >></a> --}}
-                                        <a class="link-success" href="#">Lihat Detail >></a>
                                     </div>
                                 </div>
                             </div>
@@ -27,10 +26,8 @@
                                     <div class="card-body text-danger">
                                         <h5 class="card-title">Transaksi Keluar Hari Ini</h5>
                                         <p class="card-text">
-                                            {{-- {{ $keluar }} Transaksi | Rp
-                                            {{ number_format($totalkeluar, 0, ',', '.') }} --}}
+                                            {{ $keluar }} Transaksi
                                         </p>
-                                        <a class="link-danger" href="#">Lihat Detail >></a>
                                     </div>
                                 </div>
                             </div>

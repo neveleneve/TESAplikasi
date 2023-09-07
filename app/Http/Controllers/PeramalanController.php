@@ -17,10 +17,12 @@ class PeramalanController extends Controller
     {
         $data = $this->peramalan();
         $olahData = $this->olahData($data);
+        $jumlahdata = count($data);
         $holtwinter = new HoltWinter(0.1, 0.01, 0.02, 4, $olahData);
         return view('pages.peramalan.index', [
             'peramalan' => $data,
             'holtwinter' => $holtwinter->forecast(),
+            'count' => $jumlahdata - 1,
         ]);
     }
 
@@ -35,11 +37,12 @@ class PeramalanController extends Controller
             )
             ->where('tipe_transaksi', 'keluar')
             ->groupBy('year', 'quarter')
-            ->orderBy('year')
-            ->orderBy('quarter')
+            ->orderBy('year', 'desc')
+            ->orderBy('quarter', 'desc')
             ->get();
         return $quarterlySales;
     }
+
     public function olahData($data)
     {
         $fixedData = [];

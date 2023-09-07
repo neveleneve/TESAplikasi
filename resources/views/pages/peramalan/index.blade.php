@@ -1,5 +1,14 @@
 @extends('layouts.app')
 
+@push('custom-style')
+    <style>
+        .table-container {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+    </style>
+@endpush
+
 @section('content')
     <div class="container">
         @include('layouts.sidebar')
@@ -9,26 +18,67 @@
                     <div class="card-body">
                         <h4 class="text-center fw-bold">Peramalan Penjualan</h4>
                         <hr>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Tahun</th>
-                                    <th>Kuartal Ke-</th>
-                                    <th>Penjualan</th>
-                                    <th>Peramalan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($peramalan as $key => $item)
-                                    <tr>
-                                        <td>{{ $item->year }}</td>
-                                        <td>{{ $item->quarter }}</td>
-                                        <td>{{ $item->total_penjualan }}</td>
-                                        <td>{{ $holtwinter[$key] }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-dark fw-bold" data-bs-target="#modalCetak"
+                                        data-bs-toggle="modal">
+                                        Cetak Peramalan
+                                    </button>
+                                </div>
+                                <div class="modal fade" id="modalCetak" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Cetak Peramalan</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                ...
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-outline-danger btn-sm fw-bold"
+                                                    data-bs-dismiss="modal">
+                                                    Batal
+                                                </button>
+                                                <button type="button" class="btn btn-outline-dark btn-sm fw-bold">
+                                                    Cetak
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="table-container">
+                                    <table class="table table-bordered text-center">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Tahun</th>
+                                                <th>Kuartal Ke-</th>
+                                                <th>Penjualan</th>
+                                                <th>Peramalan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($peramalan as $key => $item)
+                                                <tr>
+                                                    <td>{{ $item->year }}</td>
+                                                    <td>{{ $item->quarter }}</td>
+                                                    <td>{{ $item->total_penjualan }}</td>
+                                                    <td>{{ $holtwinter[$count] }}</td>
+                                                </tr>
+                                                @php
+                                                    $count--;
+                                                @endphp
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $masuk = Transaksi::whereMonth('created_at', date('n'))->where('created_at', date('Y'))->where('tipe_transaksi', 'masuk')->count();
+        $keluar = Transaksi::whereMonth('created_at', date('n'))->where('created_at', date('Y'))->where('tipe_transaksi', 'keluar')->count();
+        return view('home', [
+            'keluar' => $keluar,
+            'masuk' => $masuk,
+        ]);
     }
 }

@@ -26,10 +26,9 @@ Route::get('laporan/item', [App\Http\Controllers\LaporanController::class, 'item
 // report semua transaksi dengan rentang waktu
 Route::post('laporan/transaksi', [App\Http\Controllers\LaporanController::class, 'transaksiAll'])
     ->name('laporan.transaksi.all');
+// report per transaksi
 Route::get('laporan/transaksi/{transaksi}', [App\Http\Controllers\LaporanController::class, 'transaksiOne'])
-    ->name('laporan.transaksi.one');
+->name('laporan.transaksi.one');
+// report ramalan menggunakan forecasting
 Route::get('laporan/forecasting', [App\Http\Controllers\LaporanController::class, 'forecasting'])
     ->name('laporan.forecasting');
-
-Route::get('test/{quarter}/{year}', [App\Http\Controllers\LaporanController::class, 'test']);
-Route::get('test', [App\Http\Controllers\LaporanController::class, 'testx']);
