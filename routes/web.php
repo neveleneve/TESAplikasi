@@ -28,7 +28,7 @@ Route::post('laporan/transaksi', [App\Http\Controllers\LaporanController::class,
     ->name('laporan.transaksi.all');
 // report per transaksi
 Route::get('laporan/transaksi/{transaksi}', [App\Http\Controllers\LaporanController::class, 'transaksiOne'])
-->name('laporan.transaksi.one');
+    ->name('laporan.transaksi.one');
 // report ramalan menggunakan forecasting
 Route::post('laporan/forecasting', [App\Http\Controllers\LaporanController::class, 'forecasting'])
     ->name('laporan.forecasting');
