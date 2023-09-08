@@ -22,7 +22,7 @@ class PeramalanController extends Controller
             $jumlahdata = count($data);
             $holtwinter = [];
             $forecast = [];
-        }else {
+        } else {
             $olahData = $this->olahData($data);
             // dd($olahData);
             $jumlahdata = count($data);
