@@ -64,18 +64,18 @@ class ItemController extends Controller
     public function show(Item $daftar_barang)
     {
         $detailtransaksi = $daftar_barang->detailTransaksi()->paginate(10);
-        
+
         $peramalan = $this->peramalan($daftar_barang->id);
         if (count($peramalan) < 4) {
             $olahData = [];
             $holtwinter = [];
             $forecast = [];
-        }else {
+        } else {
             $olahData = $this->olahData($peramalan);
-            $holtwinter = new HoltWinter(0.1, 0.01, 0.02, 4, $olahData);
+            $holtwinter = new HoltWinter(0.1, 0.01, 0.02, 12, $olahData);
             $forecast = $holtwinter->forecast();
         }
-        // dd([$holtwinter,$forecast]);
+
         return view('pages.item.show', [
             'item' => $daftar_barang,
             'detail' => $detailtransaksi,
@@ -132,12 +132,12 @@ class ItemController extends Controller
             ->where('detail_transaksis.item_id', '=', $id)
             ->select(
                 DB::raw('YEAR(transaksis.created_at) as year'),
-                DB::raw('QUARTER(transaksis.created_at) as quarter'),
+                DB::raw('MONTH(transaksis.created_at) as month'),
                 DB::raw('SUM(detail_transaksis.jumlah) as total_penjualan')
             )
-            ->groupBy('year', 'quarter')
+            ->groupBy('year', 'month')
             ->orderBy('year', 'asc')
-            ->orderBy('quarter', 'asc')
+            ->orderBy('month', 'asc')
             ->get();
         return $quarterlySales;
     }

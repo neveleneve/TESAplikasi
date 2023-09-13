@@ -26,7 +26,7 @@ class PeramalanController extends Controller
             $olahData = $this->olahData($data);
             // dd($olahData);
             $jumlahdata = count($data);
-            $holtwinter = new HoltWinter(0.1, 0.01, 0.02, 4, $olahData);
+            $holtwinter = new HoltWinter(0.1, 0.01, 0.02, 12, $olahData);
             $forecast = $holtwinter->forecast();
         }
         return view('pages.peramalan.index', [
@@ -42,13 +42,13 @@ class PeramalanController extends Controller
             ->join('detail_transaksis', 'transaksis.id', '=', 'detail_transaksis.transaksi_id')
             ->select(
                 DB::raw('YEAR(transaksis.created_at) as year'),
-                DB::raw('QUARTER(transaksis.created_at) as quarter'),
+                DB::raw('MONTH(transaksis.created_at) as month'),
                 DB::raw('SUM(detail_transaksis.jumlah) as total_penjualan')
             )
             ->where('tipe_transaksi', 'keluar')
-            ->groupBy('year', 'quarter')
+            ->groupBy('year', 'month')
             ->orderBy('year', 'desc')
-            ->orderBy('quarter', 'desc')
+            ->orderBy('month', 'desc')
             ->get();
         return $quarterlySales;
     }

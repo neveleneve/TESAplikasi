@@ -78,9 +78,9 @@
         <thead>
             <tr>
                 <th>Tahun</th>
-                <th>Kuartal Ke-</th>
+                <th>Bulan</th>
                 <th>Penjualan</th>
-                <th>Peramalan</th>
+                <th>Peramalan Stok Barang</th>
             </tr>
         </thead>
         <tbody>
@@ -88,7 +88,7 @@
                 @if ($tahun == $item->year)
                     <tr>
                         <td>{{ $item->year }}</td>
-                        <td>{{ $item->quarter }}</td>
+                        <td>{{ $item->month }}</td>
                         <td>{{ $item->total_penjualan }}</td>
                         <td>{{ $holtwinter[$count] }}</td>
                     </tr>

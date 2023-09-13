@@ -110,9 +110,9 @@
                                 <thead class="table-dark">
                                     <tr>
                                         <th>Tahun</th>
-                                        <th>Kuartal Ke-</th>
+                                        <th>Bulan</th>
                                         <th>Jumlah</th>
-                                        <th>Peramalan</th>
+                                        <th>Peramalan Stok</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -126,7 +126,7 @@
                                         @forelse ($peramalan as $key => $items)
                                             <tr>
                                                 <td>{{ $items->year }}</td>
-                                                <td>{{ $items->quarter }}</td>
+                                                <td>{{ $items->month }}</td>
                                                 <td>{{ $items->total_penjualan }}</td>
                                                 <td>{{ $holtwinter[$key] }}</td>
                                             </tr>
